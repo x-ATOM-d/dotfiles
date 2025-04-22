@@ -1,0 +1,30 @@
+# macOS system files
+.DS_Store
+
+# Karabiner-Elements configuration files
+karabiner/.*.swp
+karabiner/private.json
+
+# Wezterm configuration files
+wezterm/.*.swp
+wezterm/wezterm.toml
+
+# Zsh configuration files
+zsh/.*.swp
+
+# Yazi configuration files
+yazi/.*.swp
+
+# Git configuration folder (if you're using the .git folder inside your dotfiles directory)
+.git/
+
+# Temporary files
+*~
+*.swp
+*.swo
+*.bak
+
+# Backup and temporary files
+*.bak
+*.tmp
+*.swp
