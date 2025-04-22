@@ -59,4 +59,3 @@ function y() {
 }
 
 export EDITOR=nvim
-export PATH=/run/current-system/sw/bin:$PATH
