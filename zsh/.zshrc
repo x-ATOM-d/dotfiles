@@ -1,24 +1,21 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# --- Powerlevel10k Instant Prompt (zostaw blisko początku) ---
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Darwin-Rebuild Path
-echo 'export PATH=/run/current-system/sw/bin:$PATH' >> ~/.zshrc
-
-
-# Powerlevel10k theme
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# ---- Zsh Plugins ----
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# --- Ścieżki ---
+export PATH=/run/current-system/sw/bin:$PATH
 export NIX_PATH=/nix/var/nix/profiles/per-user/$(whoami)/nixpkgs:nixpkgs=channel:nixos-unstable
 
-# history setup
+# --- Powerlevel10k Theme ---
+source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# --- Wtyczki Zsh ---
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# --- Historia ---
 HISTFILE=$HOME/.zhistory
 SAVEHIST=1000
 HISTSIZE=999
@@ -27,17 +24,18 @@ setopt hist_expire_dups_first
 setopt hist_ignore_dups
 setopt hist_verify
 
-# completion using arrow keys (based on history)
+# --- Strzałki w historii ---
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
-# ---- Eza (better ls) -----
+# --- Alias ls (Eza) ---
 alias ls="eza --icons=always"
 
-# ---- Zoxide (better cd) ----
+# --- Zoxide (lepsze cd) ---
 eval "$(zoxide init zsh)"
 alias cd="z"
 
+# --- Aliasy użytkownika ---
 alias c="clear"
 alias e="exit"
 alias y="yazi"
@@ -48,14 +46,15 @@ alias ga="git add ."
 alias gs="git status -s"
 alias gc="git commit -m"
 
-# ---- Yazi Setup ----
+# --- Yazi z powrotem do katalogu ---
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
 		builtin cd -- "$cwd"
 	fi
 	rm -f -- "$tmp"
 }
 
+# --- Edytor ---
 export EDITOR=nvim
