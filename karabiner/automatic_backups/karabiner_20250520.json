@@ -140,12 +140,12 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "Open Spotify",
+                                "description": "Open Obsidian",
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Spotify.app'" }],
+                                "to": [{ "shell_command": "open -a 'Obsidian.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -156,12 +156,12 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "Open Surfshark",
+                                "description": "Open Finder",
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Surfshark.app'" }],
+                                "to": [{ "shell_command": "open -a 'Finder.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -193,7 +193,7 @@
                                     "key_code": "u",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'UHF.app'" }],
+                                "to": [{ "shell_command": "open -a 'Gmail.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -236,12 +236,12 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "Open Chatterino",
+                                "description": "Open Preview",
                                 "from": {
                                     "key_code": "o",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'chatterino.app'" }],
+                                "to": [{ "shell_command": "open -a 'Preview.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -426,7 +426,7 @@
                                     "key_code": "spacebar",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -g rectangle://execute-action?name=almost-maximize" }],
+                                "to": [{ "shell_command": "open -g raycast://extensions/raycast/window-management/almost-maximize" }],
                                 "type": "basic"
                             },
                             {
