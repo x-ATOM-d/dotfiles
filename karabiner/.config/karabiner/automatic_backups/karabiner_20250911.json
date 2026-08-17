@@ -113,7 +113,7 @@
                                     "key_code": "j",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Zen.app'" }],
+                                "to": [{ "shell_command": "open -a 'Zen.ap'" }],
                                 "type": "basic"
                             },
                             {
@@ -129,7 +129,7 @@
                                     "key_code": "k",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Ghostty.app'" }],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"System Events\" to set visible of (every process whose visible is true and name is not \"Ghostty\") to false'; open -a 'Ghostty.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -140,12 +140,12 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "Open Spotify",
+                                "description": "Open Finder",
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Spotify.app'" }],
+                                "to": [{ "shell_command": "open -a 'Finder.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -204,12 +204,12 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "Open Slack",
+                                "description": "Open Apple Music",
                                 "from": {
                                     "key_code": "m",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Slack.app'" }],
+                                "to": [{ "shell_command": "open -a 'Music.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -236,12 +236,12 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "Open Chatterino",
+                                "description": "Open XLD",
                                 "from": {
-                                    "key_code": "o",
+                                    "key_code": "x",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'chatterino.app'" }],
+                                "to": [{ "shell_command": "open -a 'xld.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -1206,4 +1206,4 @@
             }
         }
     ]
-}
+

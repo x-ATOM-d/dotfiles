@@ -1,0 +1,165 @@
+#!/usr/bin/env bash
+
+# LaunchAgents do not guarantee a Homebrew PATH. Keep all child commands
+# deterministic, including actions launched later by yabai signals.
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+YABAI_BIN="/opt/homebrew/bin/yabai"
+SKETCHYBAR_BIN="/opt/homebrew/bin/sketchybar"
+
+# #############################################################################
+# KROK 1: Fundament — samo uruchomienie yabai + podstawowe zachowanie
+# Będziemy to rozbudowywać w kolejnych krokach (spaces, reguły per-apka,
+# transparency, sygnały itd.)
+# #############################################################################
+
+# Ładuje "scripting addition" — bez tego yabai ma bardzo ograniczone możliwości
+# (np. nie może zarządzać oknami tak dokładnie). Wymaga jednorazowej
+# konfiguracji sudo bez hasła (opisane w dokumentacji yabai).
+# https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
+"$YABAI_BIN" -m signal --add event=dock_did_restart action="sudo -n $YABAI_BIN --load-sa"
+# Never let an unavailable sudo credential block yabai startup. The scripting
+# addition is optional for the basic tiling configuration and will be retried
+# after the next Dock restart.
+sudo -n "$YABAI_BIN" --load-sa >/dev/null 2>&1 || true
+
+###############################################################################
+#                          Podstawowe zachowanie
+###############################################################################
+
+yabai -m config \
+  layout stack \
+  window_gap 10 \
+  window_shadow off \
+  window_animation_duration 0.0 \
+  mouse_follows_focus on \
+  focus_follows_mouse off \
+  mouse_modifier fn \
+  mouse_action1 move \
+  mouse_action2 resize \
+  mouse_drop_action swap \
+  top_padding 0 \
+  bottom_padding 10 \
+  left_padding 10 \
+  right_padding 10
+
+# SketchyBar occupies the top edge. This reserves its space in a way yabai can
+# consistently maintain across displays and space changes.
+yabai -m config external_bar all:46:0
+
+###############################################################################
+# KROK 2: Spaces — nazwane desktopy
+#
+# Nadajemy etykietę każdemu istniejącemu space. Dzięki
+# etykietom możesz się do nich odwoływać po nazwie (np. "desk3") zamiast po
+# numerze, co jest stabilniejsze — numery spaces potrafią się przesuwać, gdy
+# dodajesz/usuwasz desktopy w macOS, ale etykiety zostają przypisane do
+# tego samego space.
+#
+# Nazwy pozostają poprawne również wtedy, gdy liczba spaces lub monitorów się
+# zmieni; nie próbujemy etykietować nieistniejących pozycji.
+###############################################################################
+
+for space in $(yabai -m query --spaces | jq -r '.[].index'); do
+  yabai -m space "$space" --label "desk${space}"
+done
+
+###############################################################################
+# KROK 4: Przezroczystość okien
+#
+# Yabai obsługuje domyślną opacity globalnie. Pozostawiamy oba poziomy na 1.0,
+# aby fokus nie mógł ukrywać innych aplikacji.
+###############################################################################
+
+# Opacity jest globalna. Poprzednie sygnały ustawiały prawie zerową opacity
+# dla *wszystkich* nieaktywnych okien, mimo że komentarz mówił o dwóch apkach.
+# Zachowujemy czytelny, stabilny stan zamiast globalnych zmian przy każdym fokusie.
+yabai -m config window_opacity on active_window_opacity 1.0 normal_window_opacity 1.0
+
+###############################################################################
+# KROK 5: Reguły per-aplikacja — manage=off i wykluczenia
+#
+# manage=off oznacza "yabai, nie dotykaj tego okna" — zostaje floating,
+# możesz je swobodnie przesuwać/resize'ować ręcznie, bez ingerencji tilingu
+# czy stacka.
+#
+# Lista dotyczy programów, które powinny pozostać floating pod zwykłymi
+# oknami. Puste grupy reguł zostały usunięte.
+###############################################################################
+
+apps_mgoff_below="(Calculator|iStat Menus|Hammerspoon|BetterDisplay|GIMP|Notes|Activity Monitor|App StoreSoftware Update|TestRig|Gemini|Raycast|Microsoft Edge|Cisco Packet Tracer|Stickies|ProLevel|Photo Booth|Hand Mirror|SteerMouse|remote-viewer|Jitsi Meet|DaVinci Resolve|Logic Pro|Electron|Microsoft Outlook|Terminal)"
+
+yabai -m rule --add app="^${apps_mgoff_below}$" manage=off sub-layer=below
+
+# Ustawia WSZYSTKIE okna na sub-layer "normal" domyślnie — bez tego zaczynają
+# na sub-layer "below", co powoduje, że floating okna niektórych aplikacji
+# (np. OBS, DaVinci Resolve) potrafią się chować pod innymi oknami zamiast
+# być na wierzchu. To naprawia ten problem.
+# https://github.com/koekeishiya/yabai/issues/1929
+yabai -m rule --add app=".*" sub-layer=normal
+
+###############################################################################
+# KROK 6: Reguły przypisania aplikacji do konkretnych spaces
+#
+# Zaktualizowane pod Twoje faktyczne użycie desktopów:
+#   desk2 = WezTerm (terminal)
+#   desk3 = Apple Music + Spotify
+#   desk4 = Discord
+#   desk5 = Claude + ChatGPT (AI)
+#   desk6 = League of Legends (dedykowany, tylko ta gra)
+# Reszta zwykłych apek (przeglądarka, mail, komunikatory itd.) ląduje na
+# desk1 — jeśli część z nich wcale u Ciebie nie występuje, śmiało wywalimy
+# te linijki, nie musisz ich trzymać "na zapas".
+###############################################################################
+
+non_stream_space="desk1"
+
+# Reguła "łapiąca wszystko" — domyślnie każda apka ląduje na desk1,
+# chyba że niżej jest dla niej bardziej szczegółowa reguła.
+yabai -m rule --add app="^.*$" space=desk1
+
+# Niektóre apki (np. macshot) tworzą dodatkowe okna pomocnicze, które yabai
+# przenosi na desk1 powyższą regułą, ale nie zawsze poprawnie je fokusuje.
+# To wymusza fokus na nowo utworzonym oknie po krótkim opóźnieniu.
+yabai -m signal --add event=window_created app="^(macshot)$" action='sleep 0.2; yabai -m window "$YABAI_WINDOW_ID" --focus'
+
+# --- Twoje dedykowane desktopy ---
+yabai -m rule --add app="^WezTerm$" space=desk2
+yabai -m rule --add app="^Music$" space=desk3
+yabai -m rule --add app="^Spotify$" space=desk3
+yabai -m rule --add app="^Evermusic$" space=desk3
+yabai -m rule --add app="^Discord$" space=desk4
+yabai -m rule --add app="^Claude$" space=desk5
+yabai -m rule --add app="^ChatGPT$" space=desk5
+yabai -m rule --add app="^Hermes$" space=desk5
+yabai -m rule --add app="^League of Legends$" space=desk6
+yabai -m rule --add app="^Riot Client$" space=desk6
+
+# --- Pozostałe apki, domyślnie na desk1 (non_stream_space) ---
+# To zostało z poprzedniego, bardziej rozbudowanego configu — jeśli którejś
+# z nich nie używasz, po prostu usuń jej linijkę.
+yabai -m rule --add app="^Element$" space="$non_stream_space"
+yabai -m rule --add app="^WhatsApp Web$" space="$non_stream_space"
+yabai -m rule --add app="^Mail$" space="$non_stream_space"
+yabai -m rule --add app="^Microsoft Outlook$" space="$non_stream_space"
+yabai -m rule --add app="^Microsoft Edge$" space="$non_stream_space"
+yabai -m rule --add app="^1Password$" space="$non_stream_space"
+yabai -m rule --add app="^Calendar$" space="$non_stream_space"
+yabai -m rule --add app="^Google Chrome$" space="$non_stream_space"
+yabai -m rule --add app="^Microsoft Teams$" space="$non_stream_space"
+yabai -m rule --add app="^Signal$" space="$non_stream_space"
+yabai -m rule --add app="^Google Photos$" space="$non_stream_space"
+yabai -m rule --add app="^Notes$" space="$non_stream_space"
+yabai -m rule --add app="^Telegram$" space="$non_stream_space"
+
+###############################################################################
+# Synchronizacja Yabai → SketchyBar. Odświeżamy wyłącznie na rzeczywistą
+# zmianę space lub ekranu; nie ma kosztownego, nieużywanego sygnału fokusu.
+###############################################################################
+
+yabai -m signal --add event=space_changed \
+  action="$SKETCHYBAR_BIN --trigger space_change"
+
+yabai -m signal --add event=display_changed \
+  action="$SKETCHYBAR_BIN --trigger display_change"
+
+echo "yabai: podstawowa konfiguracja załadowana"
