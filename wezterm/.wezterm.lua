@@ -1,39 +1,54 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
 
--- This will hold the configuration.
+-- This will hold the configuration
 local config = wezterm.config_builder()
+local act = wezterm.action
 
--- This is where you actually apply your config choices
+-- Font
+config.font = wezterm.font("MesloLGS Nerd Font Mono")
+config.font_size = 19
 
-config.automatically_reload_config = true
+-- Window
 config.enable_tab_bar = false
-config.font = wezterm.font("JetBrains Mono", { weight = "Bold" })
-config.font_size = 18
-
-config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "RESIZE"
-config.macos_window_background_blur = 10
+config.window_background_opacity = 0.95
+config.macos_window_background_blur = 20
+config.window_padding = { left = 12, right = 12, top = 8, bottom = 0 }
+config.adjust_window_size_when_changing_font_size = false
 
-config.default_cursor_style = "BlinkingBar"
+-- Colors
+config.color_scheme = "Catppuccin Mocha"
 
-config.window_padding = {
-	left = 5,
-	right = 5,
-	top = 10,
-	bottom = 0,
-}
-config.color_scheme = "Nord (Gogh)"
-config.background = {
-	{
-		source = {
-			Color = "#000000",
-		},
-		width = "100%",
-		height = "100%",
-		opacity = 0.8,
-	},
-}
+-- Keys
+config.send_composed_key_when_left_alt_is_pressed = true
+config.send_composed_key_when_right_alt_is_pressed = true
 
--- and finally, return the configuration to wezterm
+-- Scrollback
+config.scrollback_lines = 10000
+
+-- Skok do okien tmux: Cmd+1..9 -> okna 1..9, Cmd+0 -> okno 10
+-- (prefix Ctrl-a ustawiony w ~/.config/tmux/tmux.conf; base-index 1)
+local tmux_window_keys = {}
+for i = 1, 9 do
+  table.insert(tmux_window_keys, {
+    key = tostring(i),
+    mods = "CMD",
+    action = act.Multiple {
+      act.SendKey { key = "a", mods = "CTRL" },
+      act.SendKey { key = tostring(i) },
+    },
+  })
+end
+table.insert(tmux_window_keys, {
+  key = "0",
+  mods = "CMD",
+  action = act.Multiple {
+    act.SendKey { key = "a", mods = "CTRL" },
+    act.SendKey { key = "1" },
+    act.SendKey { key = "0" },
+  },
+})
+config.keys = tmux_window_keys
+
 return config

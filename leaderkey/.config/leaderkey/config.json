@@ -1,0 +1,181 @@
+{
+  "actions" : [
+    {
+      "actions" : [
+        {
+          "key" : "j",
+          "label" : "Brave Browser",
+          "type" : "application",
+          "value" : "/Applications/Brave Browser.app"
+        },
+        {
+          "key" : "k",
+          "label" : "Ghostty",
+          "type" : "command",
+          "value" : "/Users/atom/hide_others Ghostty"
+        },
+        {
+          "key" : "f",
+          "label" : "Finder",
+          "type" : "application",
+          "value" : "/System/Library/CoreServices/Finder.app"
+        },
+        {
+          "key" : "h",
+          "label" : "Surfshark",
+          "type" : "command",
+          "value" : "/Users/atom/hide_others Surfshark"
+        },
+        {
+          "key" : "x",
+          "label" : "XLD",
+          "type" : "application",
+          "value" : "/Applications/XLD.app"
+        },
+        {
+          "key" : "u",
+          "label" : "UHF",
+          "type" : "application",
+          "value" : "/Applications/UHF.app"
+        },
+        {
+          "iconPath" : "/System/Applications/Music.app",
+          "key" : "m",
+          "label" : "Apple Music",
+          "type" : "command",
+          "value" : "/Users/atom/hide_others Music"
+        },
+        {
+          "key" : "n",
+          "label" : "Spotify",
+          "type" : "application",
+          "value" : "/Applications/Spotify.app"
+        },
+        {
+          "key" : ",",
+          "label" : "VS Code",
+          "type" : "application",
+          "value" : "/Applications/Visual Studio Code.app"
+        },
+        {
+          "key" : "d",
+          "label" : "Discord",
+          "type" : "application",
+          "value" : "/Applications/Discord.app"
+        },
+        {
+          "key" : "b",
+          "label" : "Zen Browser",
+          "type" : "application",
+          "value" : "/Applications/Zen.app"
+        },
+        {
+          "key" : ";",
+          "label" : "Signal",
+          "type" : "command",
+          "value" : "/Users/atom/hide_others Signal"
+        }
+      ],
+      "iconPath" : "lightbulb",
+      "key" : "e",
+      "label" : "Apps",
+      "type" : "group"
+    },
+    {
+      "actions" : [
+        {
+          "key" : "j",
+          "label" : "Claude webapp",
+          "type" : "application",
+          "value" : "~/Applications/Brave Browser Apps.localized/Claude.app"
+        },
+        {
+          "key" : "k",
+          "label" : "ChatGPT webapp",
+          "type" : "application",
+          "value" : "~/Applications/Brave Browser Apps.localized/ChatGPT.app"
+        }
+      ],
+      "iconPath" : "robotic.vacuum",
+      "key" : "a",
+      "label" : "AI",
+      "type" : "group"
+    },
+    {
+      "actions" : [
+        {
+          "iconPath" : "document.on.clipboard",
+          "key" : "c",
+          "label" : "Clipboard History",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/clipboard-history/clipboard-history"
+        },
+        {
+          "iconPath" : "face.smiling",
+          "key" : "e",
+          "label" : "Emoji",
+          "type" : "url",
+          "value" : "raycast://extensions/FezVrasta/emoji/emoji"
+        },
+        {
+          "iconPath" : "xmark.app.fill",
+          "key" : "x",
+          "label" : "Kill Process",
+          "type" : "url",
+          "value" : "raycast://extensions/rolandleth/kill-process/index"
+        },
+        {
+          "actions" : [
+            {
+              "key" : "u",
+              "label" : "Update",
+              "type" : "url",
+              "value" : "raycast://extensions/nhojb/brew/upgrade"
+            },
+            {
+              "key" : "c",
+              "label" : "Clean",
+              "type" : "url",
+              "value" : "raycast://extensions/nhojb/brew/clean-up"
+            }
+          ],
+          "key" : "b",
+          "label" : "Brew",
+          "type" : "group"
+        },
+        {
+          "iconPath" : "wifi.router.fill",
+          "key" : "s",
+          "label" : "Speed Test",
+          "type" : "url",
+          "value" : "raycast://extensions/tonka3000/speedtest/index"
+        }
+      ],
+      "key" : "r",
+      "label" : "Raycast",
+      "type" : "group"
+    },
+    {
+      "actions" : [
+        {
+          "iconPath" : "headphones",
+          "key" : "c",
+          "label" : "Connect Redmi",
+          "type" : "url",
+          "value" : "raycast://extensions/VladCuciureanu/toothpick/connect-favorite-device-1"
+        },
+        {
+          "iconPath" : "headphones.slash",
+          "key" : "d",
+          "label" : "Disconnect Redmi",
+          "type" : "url",
+          "value" : "raycast://extensions/VladCuciureanu/toothpick/disconnect-favorite-device-1"
+        }
+      ],
+      "key" : "b",
+      "label" : "Bluetooth",
+      "type" : "group"
+    }
+  ],
+  "type" : "group"
+}
