@@ -1,0 +1,10 @@
+#!/bin/bash
+# ~/.config/sketchybar/sketchybarrc
+# Punkt wejścia SketchyBar - uruchamia konfigurację napisaną w Lua
+
+export CONFIG_DIR="$HOME/.config/sketchybar"
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+chmod +x "$CONFIG_DIR"/plugins/*.sh
+
+lua "$CONFIG_DIR/init.lua"

@@ -28,3 +28,18 @@ yazi/.*.swp
 *.bak
 *.tmp
 *.swp
+
+# Timestamped backups (e.g. karabiner.json.bak.20260818_000318)
+*.bak.*
+
+# Embedded git repositories (plugin managers: tpm, lazy.nvim, nvim-kickstart, etc.)
+# Adding them breaks clones (gitlink with empty content). Exclude to keep dotfiles clean.
+**/.git
+tmux/.config/tmux/.tmux/plugins/
+nvim-main/.config/nvim/lazy/
+nvim-linkarzu/.config/nvim/lazy/
+nvim-kickstart/.config/nvim/
+nvim-kickstart/.config/nvim
+
+# Mirror of real HOME (don't duplicate ~/.config into dotfiles)
+HOME/.config

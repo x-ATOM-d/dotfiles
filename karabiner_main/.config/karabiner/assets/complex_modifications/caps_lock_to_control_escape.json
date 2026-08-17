@@ -1,0 +1,29 @@
+{
+  "title": "Caps Lock jako Control (przytrzymanie) i Escape (pojedyncze naciśnięcie)",
+  "rules": [
+    {
+      "description": "Caps Lock -> Control przy przytrzymaniu / z innym klawiszem, Escape przy pojedynczym naciśnięciu",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "caps_lock",
+            "optional": [
+              "any"
+            ]
+          },
+          "to": [
+            {
+              "key_code": "left_control"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "escape"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

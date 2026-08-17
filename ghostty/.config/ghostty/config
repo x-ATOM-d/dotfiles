@@ -1,0 +1,26 @@
+# ~/.config/ghostty/config
+
+# === MOTYW ===
+theme = catppuccin-mocha.conf
+
+# === CZCIONKA ===
+font-family = JetBrainsMono Nerd Font
+font-size = 18
+
+# === OKNO ===
+window-padding-x = 10
+window-padding-y = 10
+gtk-titlebar = false
+
+# === PRZEZROCZYSTOŚĆ ===
+background-opacity = 0.95
+background-blur-radius = 20
+
+# === KURSOR ===
+cursor-style = block
+cursor-style-blink = true
+
+# === INNE ===
+copy-on-select = true
+mouse-hide-while-typing = true
+scrollback-limit = 10000
